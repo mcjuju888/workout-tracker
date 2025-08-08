@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+  <form method="post">
+    <label>Date<br><input type="date" name="date" value="{{ today }}"></label><br><br>
+    <label>Exercise<br><input name="exercise" required></label><br><br>
+    <label>Sets<br><input name="sets" type="number" min="1" value="3"></label><br><br>
+    <label>Reps<br><input name="reps" type="number" min="1" value="10"></label><br><br>
+    <label>Weight (lbs)<br><input name="weight" type="number" step="0.1" value="135"></label><br><br>
+    <label>Notes<br><input name="notes"></label><br><br>
+    <button type="submit">Add Workout</button>
+  </form>
+{% endblock %}

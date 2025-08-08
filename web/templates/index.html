@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+  {% if not workouts %}
+    <p>No workouts yet. <a href="{{ url_for('add') }}">Add one</a>.</p>
+  {% else %}
+    <table>
+      <thead>
+        <tr><th>Date</th><th>Exercise</th><th>Sets</th><th>Reps</th><th>Weight</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+      {% for w in workouts %}
+        <tr>
+          <td>{{ w.date if w.date else w['date'] }}</td>
+          <td>{{ w.exercise if w.exercise else w['exercise'] }}</td>
+          <td>{{ w.sets if w.sets else w['sets'] }}</td>
+          <td>{{ w.reps if w.reps else w['reps'] }}</td>
+          <td>{{ w.weight if w.weight else w['weight'] }}</td>
+          <td>{{ w.notes if w.notes else w['notes'] }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+{% endblock %}
