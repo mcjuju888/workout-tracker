@@ -1,24 +1,44 @@
 {% extends "base.html" %}
 {% block content %}
-  {% if not workouts %}
-    <p>No workouts yet. <a href="{{ url_for('add') }}">Add one</a>.</p>
-  {% else %}
-    <table>
-      <thead>
-        <tr><th>Date</th><th>Exercise</th><th>Sets</th><th>Reps</th><th>Weight</th><th>Notes</th></tr>
-      </thead>
-      <tbody>
-      {% for w in workouts %}
-        <tr>
-          <td>{{ w.date if w.date else w['date'] }}</td>
-          <td>{{ w.exercise if w.exercise else w['exercise'] }}</td>
-          <td>{{ w.sets if w.sets else w['sets'] }}</td>
-          <td>{{ w.reps if w.reps else w['reps'] }}</td>
-          <td>{{ w.weight if w.weight else w['weight'] }}</td>
-          <td>{{ w.notes if w.notes else w['notes'] }}</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  {% endif %}
+
+<form method="get" style="margin-bottom:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+  <input type="text" name="q" placeholder="Search exercise (e.g., bench)"
+         value="{{ q or '' }}" />
+  <input type="date" name="start" value="{{ start or '' }}" />
+  <input type="date" name="end" value="{{ end or '' }}" />
+  <button type="submit">Filter</button>
+  <a class="button" href="{{ url_for('index') }}">Clear</a>
+</form>
+
+<p style="color:gray; margin-top:-0.5rem;">Showing {{ total }} result(s)</p>
+
+{% if not workouts %}
+  <p>No workouts found. <a href="{{ url_for('add') }}">Add one</a>.</p>
+{% else %}
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th><th>Exercise</th><th>Sets</th><th>Reps</th><th>Weight</th><th>Notes</th><th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for w in workouts %}
+      <tr>
+        <td>{{ w['date'] }}</td>
+        <td>{{ w['exercise'] }}</td>
+        <td>{{ w['sets'] }}</td>
+        <td>{{ w['reps'] }}</td>
+        <td>{{ w['weight'] }}</td>
+        <td>{{ w['notes'] }}</td>
+        <td>
+          <a class="button" href="{{ url_for('edit', wid=w['id']) }}">Edit</a>
+          <form method="post" action="{{ url_for('delete', wid=w['id']) }}" style="display:inline" onsubmit="return confirm('Delete this workout?');">
+            <button type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
 {% endblock %}
